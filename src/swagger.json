@@ -1,0 +1,2960 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AcuityScheduling API",
+    "description": "AcuityScheduling API",
+    "contact": {
+      "name": "Keith Hill",
+      "url": "https://acuityscheduling.com/api/v1/",
+      "email": "keith@dexs.ca"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/vic10us/AcuityScheduling/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://acuityscheduling.com/api/v1",
+      "description": "Production URL"
+    }
+  ],
+  "paths": {
+    "/appointments": {
+      "get": {
+        "tags": [
+        ],
+        "summary": "Get a list of appointments currently scheduled for the authenticated user.",
+        "description": "Get a list of appointments currently scheduled for the authenticated user.",
+        "operationId": "listAppointments",
+        "parameters": [
+          {
+            "name": "max",
+            "in": "query",
+            "description": "maximum number of results",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "in": "query",
+            "description": "only get appointments this date and after",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "in": "query",
+            "description": "only get appointments this date and before",
+            "required": false,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "calendarID",
+            "in": "query",
+            "description": "show only appointments on calendar with specified ID",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "appointmentTypeID",
+            "in": "query",
+            "description": "show only appointments of this type",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "canceled",
+            "in": "query",
+            "description": "get canceled appointments",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "filter appointments for client first name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "filter appointments for client last name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "filter appointments for client e-mail address",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "filter appointments for client phone",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field:id",
+            "in": "query",
+            "description": "filter appointments matching a particular custom intake form field",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "field:1234=Hello"
+          },
+          {
+            "name": "addonIDs",
+            "in": "query",
+            "description": "only get appointments this date and before",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "excludeForms",
+            "in": "query",
+            "description": "don't include intake forms in the response object (speeds up the response)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "canClientCancel",
+            "in": "query",
+            "description": "get appointments that allow clients to cancel",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "canClientReschedule",
+            "in": "query",
+            "description": "get appointments that allow clients to reschedule",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "ASC or DESC",
+            "required": false,
+            "schema": {
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "appointment results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Appointment"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+        ],
+        "summary": "Create an appointment.",
+        "description": "Create an appointment.",
+        "operationId": "createAppointment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentCreationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointments/{appointmentId}/cancel": {
+      "put": {
+        "summary": "Cancel an appointment by ID",
+        "description": "Cancel an appointment using this endpoint. Once canceled, appointments will have a noShow attribute. This attribute may be updated, but it isn't possible to un-cancel the appointment.",
+        "operationId": "cancelAppointment",
+        "parameters": [
+          {
+            "name": "admin",
+            "in": "query",
+            "description": "By default appointments are canceled as a client. Canceling an appointment as an admin allows setting the \"noShow\" field and disables cancellation rules. To cancel as an admin pass the query parameter admin=true.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "noEmail",
+            "in": "query",
+            "description": "Skip sending the cancellation e-mail and SMS by canceling the appointment with the noEmail=true query parameter.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentCancellationRequest"
+              },
+              "examples": {
+                "Appointment Cancellation Request Example": {
+                  "value": {
+                    "cancelNote": "The bridge is out"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "The updated appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "appointmentId",
+          "in": "path",
+          "description": "Appointment ID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/appointments/{appointmentId}/payments": {
+      "get": {
+        "summary": "Retrieve a list of payment transactions for a particular appointment.",
+        "description": "Retrieve a list of payment transactions for a particular appointment.",
+        "operationId": "getAppointmentPayments",
+        "responses": {
+          "200": {
+            "description": "Appointment Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                },
+                "examples": {
+                  "Example Payment Transactions": {
+                    "value": [
+                      {
+                        "transactionID": "ch_123456abcdef",
+                        "created": "2016-01-22T09:27:51-0800",
+                        "processor": "stripe",
+                        "amount": "300.00"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "appointmentId",
+          "in": "path",
+          "description": "Appointment ID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/appointments/{appointmentId}/reschedule": {
+      "put": {
+        "summary": "Reschedule an appointment to a different date or calendar. Or both!",
+        "description": "Reschedule an appointment to a different date or calendar. Or both!\n\nTo reschedule to an overlapping time, get availability using the ignoreAppointmentIDs[] argument for /availability/times with the current appointment's ID.",
+        "operationId": "rescheduleAppointment",
+        "parameters": [
+          {
+            "name": "admin",
+            "in": "query",
+            "description": "By default appointments are canceled as a client. Canceling an appointment as an admin allows setting the \"noShow\" field and disables cancellation rules. To cancel as an admin pass the query parameter admin=true.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "noEmail",
+            "in": "query",
+            "description": "Skip sending the cancellation e-mail and SMS by canceling the appointment with the noEmail=true query parameter.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentRescheduleRequest"
+              },
+              "examples": {
+                "Appointment Reschedule Request Example": {
+                  "value": {
+                    "datetime": "2016-02-03T14:00:00-0800"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "The updated appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "appointmentId",
+          "in": "path",
+          "description": "Appointment ID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/appointments/{appointmentId}": {
+      "get": {
+        "summary": "Get a single appointment by ID.",
+        "description": "Get a single appointment by ID.",
+        "operationId": "getAppointment",
+        "parameters": [
+          {
+            "name": "pastFormAnswers",
+            "in": "query",
+            "description": "includes previous answers given to the intake forms of that appointment",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointment Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                },
+                "examples": {
+                  "Example Appointment": {
+                    "value": {
+                      "id": 54321,
+                      "firstName": "Bob",
+                      "lastName": "McTest",
+                      "phone": "",
+                      "email": "bob.mctest@example.com",
+                      "date": "June 17, 2013",
+                      "time": "10:15am",
+                      "endTime": "11:15am",
+                      "dateCreated": "July 2, 2013",
+                      "datetime": "2013-06-17T10:15:00-0700",
+                      "price": "10.00",
+                      "paid": "no",
+                      "amountPaid": "0.00",
+                      "type": "Regular Visit",
+                      "appointmentTypeID": 1,
+                      "duration": "60",
+                      "calendar": "My Calendar",
+                      "calendarID": 27238,
+                      "canClientCancel": false,
+                      "canClientReschedule": false,
+                      "location": "",
+                      "confirmationPage": "https://acuityscheduling.com/schedule.php?owner=11145481&id[]=1220aa9f41091c50c0cc659385cfa1d0&action=appt",
+                      "formsText": "...",
+                      "notes": "Notes",
+                      "timezone": "America/New_York",
+                      "forms": [
+                        {
+                          "id": 1,
+                          "name": "Example Intake Form",
+                          "values": [
+                            {
+                              "value": "yes",
+                              "name": "Is this your first visit?",
+                              "fieldID": 1,
+                              "id": 21502993
+                            },
+                            {
+                              "value": "Ninja",
+                              "name": "What is your goal for this appointment?",
+                              "fieldID": 2,
+                              "id": 21502994
+                            }
+                          ]
+                        }
+                      ],
+                      "labels": [
+                        {
+                          "id": 3,
+                          "name": "Completed",
+                          "color": "pink"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a single appointment by ID.",
+        "description": "Update a single appointment by ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The updated appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "appointmentId",
+          "in": "path",
+          "description": "Appointment ID",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/appointment-addons": {
+      "get": {
+        "summary": "Get a full list of addons from the authenticated user.",
+        "description": "Get a full list of addons from the authenticated user.",
+        "operationId": "listAppointmentAddons",
+        "responses": {
+          "200": {
+            "description": "List of addons from the authenticated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentAddon"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendars": {
+      "get": {
+        "summary": "Retrieves a list of calendars this user has access to.",
+        "description": "Retrieves a list of calendars this user has access to.",
+        "operationId": "listCalendars",
+        "responses": {
+          "200": {
+            "description": "list of calendars this user has access to",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Calendar"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/forms": {
+      "get": {
+        "summary": "Return intake forms.",
+        "description": "Return intake forms.",
+        "operationId": "listForms",
+        "responses": {
+          "200": {
+            "description": "intake forms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Form"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/labels": {
+      "get": {
+        "summary": "Get labels",
+        "description": "Get labels",
+        "operationId": "listLabels",
+        "responses": {
+          "200": {
+            "description": "List of labels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Label"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointment-types": {
+      "get": {
+        "summary": "Return appointment types",
+        "description": "Return appointment types",
+        "operationId": "listAppointmentTypes",
+        "parameters": [
+          {
+            "name": "includeDeleted",
+            "in": "query",
+            "description": "Also include deleted appointment types in the response",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of appointment types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentType"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/availability/check-times": {
+      "post": {
+        "summary": "Validate available times for an appointment",
+        "description": "This endpoint available validates slots for an appointment. If a slot is valid and available, the response will include \"valid\": true. Otherwise, if a time is not a valid slot or not an available slot, \"valid\": false will be returned along with a reason.\r\n\r\nChecking times on separate calendars at once is supported, but validation happens per-calendar and global limits like resources will only be considered for individual calendars.",
+        "operationId": "checkAppointmentTimes",
+        "requestBody": {
+          "description": "Single appointment time check",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/AppointmentCheckTimeRequest"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AppointmentCheckTimeRequest"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The result of the check",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AppointmentCheckTimeResult"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AppointmentCheckTimeResult"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/availability/classes": {
+      "get": {
+        "summary": "Return available classes for a given month",
+        "description": "Return available classes for a given month",
+        "operationId": "listClassesForMonth",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "description": "Month to check available classes (must be parsable by strtotime, eg. 2016-02 http://php.net/manual/en/function.strtotime.php)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointmentTypeID",
+            "in": "query",
+            "description": "Numeric id of the appointment type to check availability for. By default, check availability for all class appointment types.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "calendarID",
+            "in": "query",
+            "description": "Numeric id of the calendar to check availability for. By default, check availability for all calendars the appointment type is offered on.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "Long timezone id for availability time converison (eg. America/New_York)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minDate",
+            "in": "query",
+            "description": "The earliest date to return classes for. The will be over-ridden by month",
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "in": "query",
+            "description": "The latest date to return classes for. This will be over-ridden by month.",
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeUnavailable",
+            "in": "query",
+            "description": "List all classes, including those that are no longer available.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includePrivate",
+            "in": "query",
+            "description": "List all classes, including those marked as private",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available classes for a given month",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Class"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/availability/dates": {
+      "get": {
+        "summary": "Return dates with availability for a month and an appointment type",
+        "description": "Return dates with availability for a month and an appointment type",
+        "operationId": "listAvailabilityDates",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "description": "Month to check available dates (must be parsable by strtotime, eg. 2016-02 http://php.net/manual/en/function.strtotime.php)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointmentTypeID",
+            "in": "query",
+            "description": "Numeric id of the appointment type to check availability for.",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "calendarID",
+            "in": "query",
+            "description": "Numeric id of the calendar to check availability for. By default, check availability for all calendars the appointment type is offered on.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "addonIDs",
+            "in": "query",
+            "description": "Addon IDs to use when calculating availability for this appointment type. Addons must be assoicated with the appointment type",
+            "schema": {
+              "type": "array",
+              "items": {
+                "format": "int32",
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "Long timezone id for availability time converison (eg. America/New_York).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An appointment type's available dates for a particular month. These dates are the same as those shown to the client through the client scheduling page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DateObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/availability/times": {
+      "get": {
+        "summary": "Return available times for a date and appointment type",
+        "description": "Return available times for a date and appointment type",
+        "operationId": "listAvailabilityTimes",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Date to check available times (must be parsable by strtotime http://php.net/manual/en/function.strtotime.php)",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointmentTypeID",
+            "in": "query",
+            "description": "Numeric id of the appointment type to check availability for.",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "calendarID",
+            "in": "query",
+            "description": "Numeric id of the calendar to check availability for. By default, check availability for all calendars the appointment type is offered on.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "addonIDs",
+            "in": "query",
+            "description": "Addon IDs to use when calculating availability for this appointment type. Addons must be assoicated with the appointment type",
+            "schema": {
+              "type": "array",
+              "items": {
+                "format": "int32",
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "Long timezone id for availability time converison (eg. America/New_York).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ignoreAppointmentIDs",
+            "in": "query",
+            "description": "Appointment IDs to ignore, allowing slots overlapping the appointment and useful for rescheduling.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "format": "int32",
+                "type": "integer"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "available times for a date and appointment type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blocks": {
+      "get": {
+        "summary": "Get a list of blocks for the authenticated user",
+        "description": "Get a list of blocks for the authenticated user",
+        "operationId": "listUserBlocks",
+        "parameters": [
+          {
+            "name": "max",
+            "in": "query",
+            "description": "Maximum number of results",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "minDate",
+            "in": "query",
+            "description": "Only get appointments this date and after (YYYY-MM-DD)",
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "in": "query",
+            "description": "Only get blocks this date and before (YYYY-MM-DD)",
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of blocks for the authenticated user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Block"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "POST request to block off time on your calendar",
+        "description": "POST request to block off time on your calendar",
+        "operationId": "createBlock",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlockCreationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the response of the block creation request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Block"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "error 422 Unprocessable Entity if not able to parse data, or invalid parameter passed"
+          }
+        }
+      }
+    },
+    "/blocks/{id}": {
+      "get": {
+        "summary": "Given an ID of a blocked off time get the details about it",
+        "description": "Given an ID of a blocked off time get the details about it",
+        "operationId": "getBlockByID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blocked time ID",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested Block by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Block"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a blocked off time Given an ID",
+        "description": "Delete a blocked off time Given an ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blocked time ID",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted Block of Time"
+          },
+          "404": {
+            "description": "Block of time not found"
+          }
+        }
+      }
+    },
+    "/certificates": {
+      "get": {
+        "summary": "Get package certificates.",
+        "description": "Get package certificates.",
+        "operationId": "listCertificates",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "query",
+            "description": "Get certificate codes for a particular product.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "orderID",
+            "in": "query",
+            "description": "Get certificate codes for a particular order.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "appointmentTypeID",
+            "in": "query",
+            "description": "Get certificate codes for a particular appointment type.",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Get valid codes for a particular email address. Combine this with appointment type to suggest certificates to a client!",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of package certificates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Certificate"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create certificate codes for packages, coupons, etc. in Acuity. Either productID (for packages) or couponID must be submitted. If you have one picked out (eg. \"FOOBAR\") you can submit the certificate parameter as well, otherwise we'll generate a random certificate for you.\r\n\r\nSubmitting the email parameter for a package assigns the certificate to that client email address.",
+        "operationId": "createCertificate",
+        "requestBody": {
+          "description": "Certificate to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateCreationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Created certificate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Certificate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/certificates/{id}": {
+      "delete": {
+        "summary": "Delete a certificate code.",
+        "description": "Delete a certificate code.",
+        "operationId": "deleteCertificate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The certificate Id",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certificate successfully deleted."
+          }
+        }
+      }
+    },
+    "/certificates/check": {
+      "get": {
+        "summary": "Check that a certificate code is valid for a particular appointment type.",
+        "description": "Check that a certificate code is valid for a particular appointment type. Use this to validate a certificate code before setting it on an appointment.\r\n\r\nOptionally check that the certificate code is still valid for a particular client e-mail address too, eg. in the case of single-use coupons",
+        "operationId": "checkCertificate",
+        "parameters": [
+          {
+            "name": "certificate",
+            "in": "query",
+            "description": "The certificate code to check.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointmentTypeID",
+            "in": "query",
+            "description": "The appointment type ID to check.",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "An optional email address to check if the certificate is valid for (eg. for coupon use).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certificate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Certificate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients": {
+      "get": {
+        "summary": "Get list of Clients",
+        "description": "Get list of clients and optionally filter by first name, last name, phone number.",
+        "operationId": "listClients",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter client list by first name, last name, phone number.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single client result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Client"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Client"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a current client",
+        "description": "Update a current client",
+        "operationId": "updateClient",
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "Client first name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lasttName",
+            "in": "query",
+            "description": "Client last name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "Client phone number",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The fields to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Client"
+              },
+              "examples": {
+                "Update first, last and phone": {
+                  "value": {
+                    "firstName": "Bob",
+                    "lastName": "Burger",
+                    "phone": "555-555-5555"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new client.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Client"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created Client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing client",
+        "description": "Delete an existing client",
+        "operationId": "deleteClient",
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "Client first name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lasttName",
+            "in": "query",
+            "description": "Client last name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "Client phone number",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client successfully deleted"
+          },
+          "400": {
+            "description": "Client does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Client does not exist error": {
+                    "value": {
+                      "status_code": 400,
+                      "message": "Client does not exist",
+                      "error": "client_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "summary": "Get basic account information",
+        "description": "Get basic account information",
+        "operationId": "getMe",
+        "responses": {
+          "200": {
+            "description": "basic account information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Retrieves a list of orders from the online store with most recent first.",
+        "description": "Retrieves a list of orders from the online store with most recent first. \nStatus can be delivered, paid, or unpaid. \nTitle is a semi-colon separated list of the product names ordered",
+        "operationId": "listOrders",
+        "parameters": [
+          {
+            "name": "max",
+            "in": "query",
+            "description": "maximum number of results",
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Get details about a single order by ID",
+        "description": "Get details about a single order by ID.",
+        "operationId": "getOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the requested Order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Get a list of products and packages.",
+        "description": "Get a list of products and packages",
+        "operationId": "listProducts",
+        "parameters": [
+          {
+            "name": "deleted",
+            "in": "query",
+            "description": "Retrieve deleted products.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of products and packages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "required": [
+          "status_code",
+          "error"
+        ],
+        "type": "object",
+        "properties": {
+          "status_code": {
+            "description": "HTTP Status Code",
+            "type": "number",
+            "example": 400
+          },
+          "error": {
+            "description": "Internal Error Code",
+            "type": "string",
+            "example": "invalid_name"
+          },
+          "message": {
+            "description": "Descriptive message about what went wrong (if possible)",
+            "type": "string",
+            "example": "Can not clear the field \"firstName\"."
+          }
+        }
+      },
+      "Me": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "",
+            "type": "integer",
+            "example": 1
+          },
+          "email": {
+            "description": "",
+            "type": "string",
+            "example": "example@acuityscheduling.com"
+          },
+          "timezone": {
+            "description": "",
+            "type": "string",
+            "example": "America/New_York"
+          },
+          "firstDayOfWeek": {
+            "format": "int32",
+            "description": "",
+            "type": "integer",
+            "example": 0
+          },
+          "timeFormat": {
+            "description": "",
+            "type": "string",
+            "example": "ampm"
+          },
+          "currency": {
+            "description": "",
+            "type": "string",
+            "example": "USD"
+          },
+          "schedulingPage": {
+            "format": "url",
+            "description": "",
+            "type": "string",
+            "example": "https://example.acuityscheduling.com/"
+          },
+          "embedCode": {
+            "description": "",
+            "type": "string",
+            "example": "<iframe>...</script>"
+          },
+          "plan": {
+            "description": "",
+            "type": "string",
+            "example": "Professional"
+          },
+          "name": {
+            "description": "",
+            "type": "string",
+            "example": "Example"
+          },
+          "description": {
+            "description": "",
+            "type": "string",
+            "example": ""
+          }
+        }
+      },
+      "AppointmentCreationRequest": {
+        "title": "Root Type for AppointmentCreationRequest",
+        "description": "The root of the AppointmentCreationRequest type's schema.",
+        "required": [
+          "datetime",
+          "appointmentTypeID",
+          "firstName",
+          "lastName",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "format": "date-time",
+            "description": "Required date and time for the appointment, parsed by strtotime in the business timezone. (http://php.net/manual/en/function.strtotime.php)",
+            "type": "string"
+          },
+          "appointmentTypeID": {
+            "format": "int32",
+            "description": "Appointment type id.",
+            "type": "integer"
+          },
+          "firstName": {
+            "description": "Client first name.",
+            "type": "string"
+          },
+          "lastName": {
+            "description": "Client last name.",
+            "type": "string"
+          },
+          "email": {
+            "description": "Client e-mail address. Optional for admins.",
+            "type": "string"
+          },
+          "certificate": {
+            "description": "Package or coupon certificate code.",
+            "type": "string"
+          },
+          "fields": {
+            "description": "A special field for setting form field values.",
+            "type": "array",
+            "items": {
+            }
+          },
+          "labels": {
+            "description": "An array of label objects. Currently only accepts an array of length 1.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Label"
+            }
+          },
+          "timezone": {
+            "description": "Client timezone.",
+            "type": "string"
+          },
+          "notes": {
+            "description": "Settable when booking as an admin.",
+            "type": "string"
+          },
+          "admin": {
+            "description": "By default appointments are created as if they are being booked by a client. Booking as an admin disables availability and attribute validations, and allows setting the notes attribute. To book as an admin pass the query parameter admin=true.",
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "datetime": "2018-02-10T09:30Z",
+          "appointmentTypeID": 12,
+          "firstName": "some text",
+          "lastName": "some text",
+          "email": "some text",
+          "certificate": "some text",
+          "fields": [
+            {
+            },
+            {
+            }
+          ],
+          "labels": [
+            {
+              "id": 76,
+              "name": "some text",
+              "color": "red"
+            },
+            {
+              "id": 66,
+              "name": "some text",
+              "color": "blue"
+            }
+          ],
+          "timezone": "some text",
+          "notes": "some text",
+          "admin": true
+        }
+      },
+      "AppointmentPatch": {
+        "title": "Root Type for AppointmentPatch",
+        "description": "Update an appointment details from a white-list of updatable attributes.",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "description": "Client first name, may not be removed.",
+            "type": "string"
+          },
+          "lastName": {
+            "description": "Client last name, may not be removed.",
+            "type": "string"
+          },
+          "certificate": {
+            "description": "Package or coupon certificate code. May only be set by admins. Learn more about booking as an admin (https://developers.acuityscheduling.com/reference#section-updating-as-an-admin)",
+            "type": "string"
+          },
+          "phone": {
+            "description": "Client phone. May not be removed for clients depending on account settings, optional for admins.",
+            "type": "string"
+          },
+          "email": {
+            "description": "Client email. May not be removed for clients, optional for admins.",
+            "type": "string"
+          },
+          "notes": {
+            "description": "May only be set by admins. Learn more about booking as an admin.",
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+            }
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+            }
+          }
+        },
+        "example": {
+          "firstName": "John",
+          "lastName": "Smith",
+          "certificate": "",
+          "phone": "555-555-1212",
+          "email": "someone@somewhere.com",
+          "fields": [
+            {
+              "id": 1,
+              "value": "My field value."
+            }
+          ],
+          "labels": [
+            {
+              "id": 1
+            }
+          ]
+        }
+      },
+      "AppointmentCancellationRequest": {
+        "title": "Root Type for AppointmentCancellationRequest",
+        "description": "The root of the AppointmentCancellationRequest type's schema.",
+        "type": "object",
+        "properties": {
+          "cancelNote": {
+            "description": "A message to send with cancellation notifications",
+            "type": "string"
+          },
+          "noShow": {
+            "description": "Whether the appointment was a no show, settable by admins.",
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "cancelNote": "The bridge is out",
+          "noShow": false
+        }
+      },
+      "Payment": {
+        "title": "Payment Transaction",
+        "description": "Payment Transaction",
+        "type": "object",
+        "properties": {
+          "transactionID": {
+            "description": "The 3rd party processor transaction ID.",
+            "type": "string"
+          },
+          "created": {
+            "format": "date",
+            "description": "The date the transaction was created.",
+            "type": "string"
+          },
+          "processor": {
+            "description": "The key for the processor: stripe, paypal, paypal_pro, braintree or authorizenet.",
+            "enum": [
+              "stripe",
+              "paypal",
+              "paypal_pro",
+              "braintree",
+              "authoriznet"
+            ]
+          },
+          "amount": {
+            "description": "The amount of the processed transaction.",
+            "type": "string"
+          }
+        },
+        "example": {
+          "transactionID": "ch_123456abcdef",
+          "created": "2016-01-22T09:27:51-0800",
+          "processor": "stripe",
+          "amount": "300.00"
+        }
+      },
+      "AppointmentAddon": {
+        "title": "Root Type for AppointmentAddon",
+        "description": "Addons can add time and duration to an appointment before it is booked",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "duration": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "price": {
+            "type": "string"
+          },
+          "private": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": "Butter Finger Cleanup",
+          "duration": 15,
+          "price": "15.00",
+          "private": false
+        }
+      },
+      "AppointmentRescheduleRequest": {
+        "title": "Root Type for AppointmentCancellationRequest",
+        "description": "The root of the AppointmentCancellationRequest type's schema.",
+        "required": [
+          "datetime"
+        ],
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "format": "date",
+            "description": "Required date and time for the appointment, parsed by strtotime in the business timezone. (http://php.net/manual/en/function.strtotime.php)",
+            "type": "string"
+          },
+          "calendarID": {
+            "format": "int32",
+            "description": "Calendar ID to reschedule to. If not provided we'll leave the appointment on the same calendar. Submit null and we'll try to find an available calendar automatically.",
+            "type": "integer"
+          },
+          "timezone": {
+            "description": "Client timezone.",
+            "type": "string"
+          }
+        },
+        "example": {
+          "datetime": "2016-02-03T14:00:00-0400"
+        }
+      },
+      "AppointmentType": {
+        "title": "Root Type for AppointmentType",
+        "description": "appointment types",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "appointment type ID",
+            "type": "integer"
+          },
+          "active": {
+            "description": "wether the appointment type is deleted",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "the name of the appointment type",
+            "type": "string"
+          },
+          "description": {
+            "description": "the description of the appointment type",
+            "type": "string"
+          },
+          "duration": {
+            "format": "int32",
+            "description": "the duration in minutes",
+            "type": "integer"
+          },
+          "price": {
+            "description": "the price in the account's currency",
+            "type": "string"
+          },
+          "category": {
+            "description": "the category of the appointment type",
+            "type": "string"
+          },
+          "color": {
+            "description": "the color of the appointment type",
+            "type": "string"
+          },
+          "private": {
+            "description": "whether or not the appointment type is a private type",
+            "type": "boolean"
+          },
+          "type": {
+            "description": "the kind of appointment type: service, class or series (a series is a class which the client should book all times offered)",
+            "enum": [
+              "service",
+              "class",
+              "series"
+            ]
+          },
+          "classSize": {
+            "format": "int32",
+            "description": "for a class or series the maximum class size, null otherwise",
+            "type": "integer"
+          },
+          "paddingAfter": {
+            "format": "int32",
+            "description": "the post-appointment padding in minutes",
+            "type": "integer"
+          },
+          "paddingBefore": {
+            "format": "int32",
+            "description": "the pre-appointment padding in minutes",
+            "type": "integer"
+          },
+          "calendarIDs": {
+            "description": "the IDs of calendars this type is offered on",
+            "type": "array",
+            "items": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        },
+        "example": {
+          "id": 8,
+          "active": "true",
+          "name": "Become a Better Builder",
+          "description": "",
+          "duration": 30,
+          "price": "0.00",
+          "category": "Classes",
+          "color": "#469D6E",
+          "private": false,
+          "type": "class",
+          "classSize": 8,
+          "paddingAfter": 0,
+          "paddingBefore": 1,
+          "calendarIDs": [
+            1,
+            2
+          ]
+        }
+      },
+      "AppointmentCheckTimeResult": {
+        "title": "Root Type for AppointmentCheckTimeResult",
+        "description": "Appointment Check Time Result",
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "format": "date-time",
+            "description": "date and time validated, in the business timezone",
+            "type": "string"
+          },
+          "appointmentTypeID": {
+            "format": "int32",
+            "description": "Appointment type ID",
+            "type": "integer"
+          },
+          "calendarID": {
+            "format": "int32",
+            "description": "Calendar ID",
+            "type": "integer"
+          },
+          "valid": {
+            "description": "Validation result",
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "datetime": "2017-11-15T16:00:00-0800",
+          "appointmentTypeID": 1,
+          "calendarID": 1,
+          "valid": true
+        }
+      },
+      "AppointmentCheckTimeRequest": {
+        "title": "Root Type for AppointmentCheckTimeRequest",
+        "description": "Appointment Check Time Request",
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "format": "date-time",
+            "description": "Required date and time to validate, parsed by strtotime in the business timezone",
+            "type": "string"
+          },
+          "appointmentTypeID": {
+            "format": "int32",
+            "description": "Appointment type ID",
+            "type": "integer"
+          },
+          "calendarID": {
+            "format": "int32",
+            "description": "Calendar ID. If not provided we'll check for any available calendar",
+            "type": "integer"
+          }
+        },
+        "example": {
+          "datetime": "2017-11-15T16:00:00-0800",
+          "appointmentTypeID": 1,
+          "calendarID": 1
+        }
+      },
+      "Class": {
+        "title": "Root Type for Class",
+        "description": "Class",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "the class ID",
+            "type": "integer"
+          },
+          "appointmentTypeID": {
+            "format": "int32",
+            "description": "the ID of the appointment type of the class offering",
+            "type": "integer"
+          },
+          "calendarID": {
+            "format": "int32",
+            "description": "the ID of the calendar the class is offered on",
+            "type": "integer"
+          },
+          "name": {
+            "description": "the name of the appointment type",
+            "type": "string"
+          },
+          "time": {
+            "format": "date-time",
+            "description": "the time of the class offering",
+            "type": "string"
+          },
+          "calendar": {
+            "description": "the name of the calendar",
+            "type": "string"
+          },
+          "duration": {
+            "format": "int32",
+            "description": "the duration of the class in minutes",
+            "type": "integer"
+          },
+          "isSeries": {
+            "description": "whether or not the class is a series (a series is a class which the client should book all times offered)",
+            "type": "boolean"
+          },
+          "slots": {
+            "format": "int32",
+            "description": "the maximum number of attendees in the class",
+            "type": "integer"
+          },
+          "slotsAvailable": {
+            "format": "int32",
+            "description": "the remaining slots still available",
+            "type": "integer"
+          }
+        },
+        "example": {
+          "id": 1,
+          "appointmentTypeID": 8,
+          "calendarID": 2,
+          "name": "Become a Better Builder",
+          "time": "2016-02-10T18:00:00-0800",
+          "calendar": "More Calendar",
+          "duration": 30,
+          "isSeries": false,
+          "slots": 8,
+          "slotsAvailable": 8
+        }
+      },
+      "DateObject": {
+        "title": "Root Type for DateObject",
+        "description": "Date Object",
+        "type": "object",
+        "properties": {
+          "date": {
+            "format": "date",
+            "description": "a date",
+            "type": "string"
+          }
+        },
+        "example": {
+          "date": "2018-01-01"
+        }
+      },
+      "TimeObject": {
+        "title": "Root Type for TimeObject",
+        "description": "Time Object",
+        "type": "object",
+        "properties": {
+          "time": {
+            "format": "date-time",
+            "description": "Time",
+            "type": "string"
+          }
+        },
+        "example": {
+          "time": "2016-02-04T13:00:00-0800"
+        }
+      },
+      "Block": {
+        "title": "Root Type for Block",
+        "description": "Block",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "until": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "recurring": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "end": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "start": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "calendarID": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "example": {
+          "description": "Every Wednesday 11:00am to 12:00pm starting  8 July 2015 ending 29 July 2015",
+          "until": "2015-07-29T12:00:00-0700",
+          "recurring": "weekly",
+          "notes": "Recurring blocked time.",
+          "end": "2015-07-08T12:00:00-0700",
+          "start": "2015-07-08T11:00:00-0700",
+          "calendarID": 1,
+          "id": 4
+        }
+      },
+      "BlockCreationRequest": {
+        "title": "Root Type for BlockCreateRequest",
+        "description": "request to block off time on your calendar",
+        "type": "object",
+        "properties": {
+          "start": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "end": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "calendarID": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "start": "2017-01-01 12:00am",
+          "end": "2015-01-01 11:59pm",
+          "calendarID": "27238",
+          "notes": "Happy New Year!"
+        }
+      },
+      "BlockCreationResponse": {
+        "title": "Root Type for BlockCreationResponse",
+        "description": "Block Creation Response",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 174453240,
+          "notes": "Test 1",
+          "description": "Wednesday 17 June 2015 3:00am - 4:00am"
+        }
+      },
+      "Certificate": {
+        "title": "Root Type for Certificate",
+        "description": "Certificate",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "certificate": {
+            "type": "string"
+          },
+          "productID": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "orderID": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "appointmentTypeIDs": {
+            "type": "array",
+            "items": {
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "remainingCounts": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "remainingMinutes": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "expiration": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 2,
+          "certificate": "7FFF6C65",
+          "productID": 3,
+          "orderID": 2,
+          "appointmentTypeIDs": [
+            1,
+            2,
+            3
+          ],
+          "name": "120 Build Minutes",
+          "email": "",
+          "type": "minutes",
+          "remainingCounts": 1,
+          "remainingMinutes": 120,
+          "expiration": "2018-01-01T12:00:00"
+        }
+      },
+      "CertificateCreationRequest": {
+        "title": "Root Type for CertificateCreationRequest",
+        "description": "Certificate Creation Request",
+        "type": "object",
+        "properties": {
+          "productID": {
+            "format": "int32",
+            "description": "The package to create a certificate for.",
+            "type": "integer"
+          },
+          "couponID": {
+            "format": "int32",
+            "description": "The coupon to create a certificate for.",
+            "type": "integer"
+          },
+          "email": {
+            "description": "The e-mail address to assign a package code to.",
+            "type": "string"
+          },
+          "certificate": {
+            "description": "The certificate code if you have one picked out. We'll choose one automatically if left blank.",
+            "type": "string"
+          }
+        },
+        "example": {
+          "productID": 1,
+          "couponID": 1,
+          "email": "",
+          "certificate": "BFB0E13E"
+        }
+      },
+      "Client": {
+        "title": "Root Type for Client",
+        "description": "Client",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "description": "Client first name",
+            "type": "string"
+          },
+          "lastName": {
+            "description": "Client last name",
+            "type": "string"
+          },
+          "phone": {
+            "description": "Client phone number",
+            "type": "string"
+          },
+          "notes": {
+            "description": "Client notes",
+            "type": "string"
+          },
+          "email": {
+            "description": "Client email",
+            "type": "string"
+          }
+        },
+        "example": {
+          "firstName": "Bob",
+          "lastName": "McTest",
+          "phone": "",
+          "notes": "",
+          "email": "bob@test.er"
+        }
+      },
+      "Label": {
+        "description": "Label",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "Label ID",
+            "type": "integer",
+            "example": 2
+          },
+          "name": {
+            "description": "Name",
+            "type": "string",
+            "example": "Checked In"
+          },
+          "color": {
+            "description": "Color",
+            "type": "string",
+            "example": "green"
+          }
+        }
+      },
+      "FormField": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "the field ID",
+            "type": "integer",
+            "example": 21502993
+          },
+          "name": {
+            "description": "the field name",
+            "type": "string",
+            "example": "Is this your first visit?"
+          },
+          "value": {
+            "description": "the field value",
+            "type": "string",
+            "example": "yes"
+          },
+          "required": {
+            "description": "whether or not the field is required for clients",
+            "type": "boolean",
+            "example": false
+          },
+          "type": {
+            "description": "the field type, one of textbox, textarea, dropdown, checkbox, checkboxlist, yesno, file, or address.",
+            "enum": [
+              "textbox",
+              "textarea",
+              "dropdown",
+              "checkbox",
+              "checkboxlist",
+              "yesno",
+              "file",
+              "address"
+            ],
+            "example": "yesno"
+          },
+          "options": {
+            "description": "the list of options for dropdown and checkboxlist fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Form": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "The form ID",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "the name of the form",
+            "type": "string",
+            "example": "Example Intake Form"
+          },
+          "description": {
+            "description": "the description of the form",
+            "type": "string",
+            "example": "Example Intake Form"
+          },
+          "hidden": {
+            "description": "whether or not the form is internal and hidden from clients",
+            "type": "boolean",
+            "example": true
+          },
+          "appointmentTypeIDs": {
+            "description": "the IDs of the appointment types the form is assigned to",
+            "type": "array",
+            "items": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "example": 1
+          },
+          "fields": {
+            "description": "the list of form fields",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FormField"
+            }
+          }
+        },
+        "example": {
+          "id": 56,
+          "name": "some text",
+          "description": "some text",
+          "hidden": true,
+          "appointmentTypeIDs": [
+            74,
+            52
+          ],
+          "fields": [
+            {
+              "id": 39,
+              "name": "some text",
+              "value": "some text",
+              "required": true,
+              "type": {
+              },
+              "options": [
+                "some text",
+                "some text"
+              ]
+            },
+            {
+              "id": 50,
+              "name": "some text",
+              "value": "some text",
+              "required": true,
+              "type": {
+              },
+              "options": [
+                "some text",
+                "some text"
+              ]
+            }
+          ]
+        }
+      },
+      "Order": {
+        "required": [
+          "id",
+          "total",
+          "status",
+          "time",
+          "firstName",
+          "lastName",
+          "phone",
+          "email",
+          "title",
+          "notes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer",
+            "example": 1234
+          },
+          "total": {
+            "type": "string",
+            "example": "55"
+          },
+          "status": {
+            "description": "can be delivered, paid, or unpaid.",
+            "enum": [
+              "delivered",
+              "paid",
+              "unpaid"
+            ],
+            "example": "paid"
+          },
+          "time": {
+            "type": "string",
+            "example": "2014-09-23 14:22"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Testy"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "McTest"
+          },
+          "phone": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "email": {
+            "type": "string",
+            "example": "test@example.com"
+          },
+          "title": {
+            "description": "semi-colon separated list of the product names ordered",
+            "type": "string",
+            "example": "Massage Gift Certificate, Relaxing Candle"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Some notes from the client"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "description": "The product ID",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "The name of the product",
+            "type": "string",
+            "example": "Pirate Party Legos"
+          },
+          "description": {
+            "description": "The description of the product",
+            "type": "string",
+            "example": "Avast, me hearties! Ain't no lego party like a pirate lego party"
+          },
+          "price": {
+            "description": "The price of the product in the account's currency",
+            "type": "string",
+            "example": "200.00"
+          },
+          "type": {
+            "description": "The product type: `product` for regular products, `appointments` for packages of appointments, or `minutes` for packages of minutes",
+            "enum": [
+              "product",
+              "appointments",
+              "minutes"
+            ],
+            "example": "product"
+          },
+          "hidden": {
+            "description": "Whether or not the product is hidden from the store",
+            "type": "boolean",
+            "example": false
+          },
+          "expires": {
+            "format": "int32",
+            "description": "The number of days from the date of purchase that a package expires. Null if it does not expire",
+            "type": "integer",
+            "example": 180
+          },
+          "appointmentTypeIDs": {
+            "description": "The appointment types that a package can be applied to",
+            "type": "array",
+            "items": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          "appointmentTypeCounts": {
+            "description": "A hash containing the total number of `appointments` an appointments package may be redeemed for, keyed by appointment type ID; null otherwise",
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            },
+            "example": {
+              "id": 1,
+              "name": "Test"
+            }
+          },
+          "minutes": {
+            "format": "int32",
+            "description": "The total number of minutes of the selected appointment types a minutes package may be redeemed for; null otherwise",
+            "type": "integer",
+            "example": 120
+          }
+        },
+        "example": {
+          "id": 6,
+          "name": "some text",
+          "description": "some text",
+          "price": "some text",
+          "type": "some text",
+          "hidden": true,
+          "expires": 45,
+          "appointmentTypeIDs": [
+            74,
+            85
+          ],
+          "appointmentTypeCounts": {
+            "1": 4
+          },
+          "minutes": 40
+        }
+      },
+      "Appointment": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "",
+            "type": "number",
+            "example": 54321
+          },
+          "firstName": {
+            "description": "",
+            "type": "string",
+            "example": "Bob"
+          },
+          "lastName": {
+            "description": "",
+            "type": "string",
+            "example": "McTest"
+          },
+          "phone": {
+            "description": "",
+            "type": "string",
+            "example": ""
+          },
+          "email": {
+            "description": "",
+            "type": "string",
+            "example": "bob.mctest@example.com"
+          },
+          "date": {
+            "description": "Date",
+            "type": "string",
+            "example": "June 17, 2013"
+          },
+          "time": {
+            "description": "",
+            "type": "string",
+            "example": "10:15am"
+          },
+          "endTime": {
+            "description": "",
+            "type": "string",
+            "example": "11:15am"
+          },
+          "dateCreated": {
+            "format": "date",
+            "description": "",
+            "type": "string",
+            "example": "July 2, 2013"
+          },
+          "datetime": {
+            "format": "datetime",
+            "description": "",
+            "type": "string",
+            "example": "2013-07-02T10:15:00-0700"
+          },
+          "datetimeCreated": {
+            "format": "datetime",
+            "description": "",
+            "type": "string",
+            "example": "2013-07-02T10:15:00-0700"
+          },
+          "price": {
+            "description": "",
+            "type": "string",
+            "example": "10.00"
+          },
+          "priceSold": {
+            "description": "",
+            "type": "string",
+            "example": "10.00"
+          },
+          "paid": {
+            "description": "",
+            "enum": [
+              "yes",
+              "no"
+            ],
+            "example": "no"
+          },
+          "amountPaid": {
+            "description": "",
+            "type": "string",
+            "example": "0.00"
+          },
+          "type": {
+            "description": "",
+            "type": "string",
+            "example": "Regular Visit"
+          },
+          "appointmentTypeID": {
+            "description": "",
+            "type": "number",
+            "example": 1
+          },
+          "addonIDs": {
+            "description": "",
+            "type": "array",
+            "items": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          "classID": {
+            "description": "",
+            "type": "string",
+            "example": ""
+          },
+          "category": {
+            "description": "",
+            "type": "string",
+            "example": ""
+          },
+          "duration": {
+            "description": "",
+            "type": "string",
+            "example": "60"
+          },
+          "calendar": {
+            "description": "",
+            "type": "string",
+            "example": "My Calendar"
+          },
+          "calendarID": {
+            "format": "int32",
+            "description": "",
+            "type": "integer",
+            "example": 27238
+          },
+          "subCalendarID": {
+            "format": "int32",
+            "description": "",
+            "type": "integer",
+            "example": 27238
+          },
+          "canClientCancel": {
+            "description": "",
+            "type": "boolean",
+            "example": false
+          },
+          "canceled": {
+            "description": "",
+            "type": "boolean",
+            "example": false
+          },
+          "canClientReschedule": {
+            "description": "",
+            "type": "boolean",
+            "example": false
+          },
+          "location": {
+            "description": "",
+            "type": "string",
+            "example": ""
+          },
+          "certificate": {
+            "description": "",
+            "type": "string",
+            "example": ""
+          },
+          "confirmationPage": {
+            "description": "",
+            "type": "string",
+            "example": "https://acuityscheduling.com/schedule.php?owner=11145481&id[]=1220aa9f41091c50c0cc659385cfa1d0&action=appt"
+          },
+          "notes": {
+            "description": "",
+            "type": "string",
+            "example": "Notes"
+          },
+          "noShow": {
+            "description": "",
+            "type": "boolean",
+            "example": false
+          },
+          "timezone": {
+            "description": "",
+            "type": "string",
+            "example": "America/New_York"
+          },
+          "calendarTimezone": {
+            "description": "",
+            "type": "string",
+            "example": "America/New_York"
+          },
+          "labels": {
+            "description": "Labels",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Label"
+            }
+          },
+          "forms": {
+            "description": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Form"
+            }
+          },
+          "formsText": {
+            "description": "",
+            "type": "string",
+            "example": "..."
+          },
+          "isVerified": {
+            "description": "",
+            "type": "boolean",
+            "example": false
+          },
+          "scheduledBy": {
+            "description": "",
+            "type": "string",
+            "example": "someone@bob.com"
+          }
+        }
+      },
+      "Calendar": {
+        "title": "Root Type for Calendar",
+        "description": "calendar",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "replyTo": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 1234,
+          "name": "Joe",
+          "email": "joecontractor@example.com",
+          "replyTo": "joecontractor@example.com",
+          "description": "Joe the contractor",
+          "location": "",
+          "timezone": "America/Montreal"
+        }
+      }
+    },
+    "securitySchemes": {
+      "basic-authentication": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "basic-authentication": [
+      ]
+    }
+  ]
+}

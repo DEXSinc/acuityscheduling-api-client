@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcuityScheduling.API", "src\AcuityScheduling.API.csproj", "{911F0BD2-64EA-4E55-B2BB-F64A62F09511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcuityScheduling.API.Tests", "tests\AcuityScheduling.API.Tests.csproj", "{4C388F68-ADC4-422C-A603-729CEE8895E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{911F0BD2-64EA-4E55-B2BB-F64A62F09511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{911F0BD2-64EA-4E55-B2BB-F64A62F09511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{911F0BD2-64EA-4E55-B2BB-F64A62F09511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{911F0BD2-64EA-4E55-B2BB-F64A62F09511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C388F68-ADC4-422C-A603-729CEE8895E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C388F68-ADC4-422C-A603-729CEE8895E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C388F68-ADC4-422C-A603-729CEE8895E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C388F68-ADC4-422C-A603-729CEE8895E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBF9689D-CC4C-48A5-844D-7FE4EB78FFA1}
+	EndGlobalSection
+EndGlobal
