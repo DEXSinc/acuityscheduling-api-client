@@ -6,14 +6,23 @@ Welcome to the Acuity Scheduling C# SDK.  This SDK provides examples and a stand
 
 This package can be installed via the nuget package manager.
 
-### For dotnet core applictions
+### .NET CLI
 ```sh
-$ dotnet add package AcuityScheduling.API
+$ dotnet add package AcuityScheduling.API --version 1.0.0-alpha1
 ```
 
-### Package Manager Console
+### Package Manager
 ```powershell
-PS C:\ProjectDir\> Install-Package AcuityScheduling.API
+PS C:\ProjectDir\> Install-Package AcuityScheduling.API -Version 1.0.0-alpha1
+```
+### Package Reference
+```xml
+<PackageReference Include="AcuityScheduling.API" Version="1.0.0-alpha1" />
+```
+
+### Packet CLI
+```sh
+$ paket add AcuityScheduling.API --version 1.0.0-alpha1
 ```
 
 ## Examples
