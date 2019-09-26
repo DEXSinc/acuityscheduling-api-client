@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcuityScheduling.API", "src\AcuityScheduling.API.csproj", "{911F0BD2-64EA-4E55-B2BB-F64A62F09511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcuityScheduling.API.Tests", "tests\AcuityScheduling.API.Tests.csproj", "{4C388F68-ADC4-422C-A603-729CEE8895E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcuityScheduling.API.Tests", "tests\AcuityScheduling.API.Tests.csproj", "{4C388F68-ADC4-422C-A603-729CEE8895E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A92C3BD-5C9E-4BCB-8390-94E02A08D657}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

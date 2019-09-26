@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Runtime.Serialization;
 using AcuityScheduling.API.Models;
 // ReSharper disable PartialMethodWithSinglePart
@@ -11,7 +12,7 @@ namespace AcuityScheduling.API
     {
         private readonly System.Net.Http.HttpClient _httpClient;
         private readonly Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-    
+
         public Client(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient; 

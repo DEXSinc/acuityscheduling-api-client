@@ -26,7 +26,10 @@
         /// <summary>the list of form fields</summary>
         [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<FormField> Fields { get; set; }
-    
+
+        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<FormField> Values { get; set; }
+
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
     
         [Newtonsoft.Json.JsonExtensionData]

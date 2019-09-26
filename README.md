@@ -8,21 +8,21 @@ This package can be installed via the nuget package manager.
 
 ### .NET CLI
 ```sh
-$ dotnet add package AcuityScheduling.API --version 1.0.0-alpha1
+$ dotnet add package AcuityScheduling.API --version 1.0.0-alpha3
 ```
 
 ### Package Manager
 ```powershell
-PS C:\ProjectDir\> Install-Package AcuityScheduling.API -Version 1.0.0-alpha1
+PS C:\ProjectDir\> Install-Package AcuityScheduling.API -Version 1.0.0-alpha3
 ```
 ### Package Reference
 ```xml
-<PackageReference Include="AcuityScheduling.API" Version="1.0.0-alpha1" />
+<PackageReference Include="AcuityScheduling.API" Version="1.0.0-alpha3" />
 ```
 
 ### Packet CLI
 ```sh
-$ paket add AcuityScheduling.API --version 1.0.0-alpha1
+$ paket add AcuityScheduling.API --version 1.0.0-alpha3
 ```
 
 ## Examples

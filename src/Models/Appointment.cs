@@ -121,7 +121,7 @@
         [Newtonsoft.Json.JsonProperty("isVerified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsVerified { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("scheduledBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("scheduledBy")]
         public string ScheduledBy { get; set; }
 
         [Newtonsoft.Json.JsonExtensionData]

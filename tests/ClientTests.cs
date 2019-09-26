@@ -19,6 +19,7 @@ namespace AcuityScheduling.API.Tests
             var builder = new ConfigurationBuilder();
             var config = builder
                 .AddJsonFile("appsettings.json", true)
+                .AddJsonFile("appsettings.Development.json", true)
                 .Build();
             return config;
         }
@@ -39,8 +40,25 @@ namespace AcuityScheduling.API.Tests
             {
                 BaseUrl = "https://acuityscheduling.com/api/v1/"
             };
-            var x = await client.ListAppointmentsAsync();
+            var x = await client.ListAppointmentsAsync(appointmentTypeId: 11314604);
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(x, Formatting.Indented));
+        }
+
+        [Fact]
+        public async Task CanCancelAppointment()
+        {
+            var httpClient = new HttpClient();
+            var byteArray = Encoding.ASCII.GetBytes($"{_config["AcuityScheduling:Authentication:Username"]}:{_config["AcuityScheduling:Authentication:Password"]}");
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(_config["AcuityScheduling:Authentication:Scheme"], Convert.ToBase64String(byteArray));
+            var client = new Client(httpClient)
+            {
+                BaseUrl = "https://acuityscheduling.com/api/v1/"
+            };
+            var cr = await client.CancelAppointmentAsync(new Models.AppointmentCancellationRequest()
+            {
+                CancelNote = "Appointment canceled from CRM",
+                NoShow = true
+            }, appointmentId: 319760023);
         }
     }
 }
