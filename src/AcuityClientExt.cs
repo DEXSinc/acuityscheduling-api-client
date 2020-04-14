@@ -1,26 +1,26 @@
 ﻿// ReSharper disable UnusedMember.Global
 namespace AcuityScheduling.API
 {
-    /// <summary>Client</summary>
-    public partial class Client 
+    /// <summary>AcuityClient</summary>
+    public partial class AcuityClient 
     {
-        /// <summary>Client first name</summary>
+        /// <summary>AcuityClient first name</summary>
         [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FirstName { get; set; }
     
-        /// <summary>Client last name</summary>
+        /// <summary>AcuityClient last name</summary>
         [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LastName { get; set; }
     
-        /// <summary>Client phone number</summary>
+        /// <summary>AcuityClient phone number</summary>
         [Newtonsoft.Json.JsonProperty("phone", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Phone { get; set; }
     
-        /// <summary>Client notes</summary>
+        /// <summary>AcuityClient notes</summary>
         [Newtonsoft.Json.JsonProperty("notes", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Notes { get; set; }
     
-        /// <summary>Client email</summary>
+        /// <summary>AcuityClient email</summary>
         [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Email { get; set; }
 

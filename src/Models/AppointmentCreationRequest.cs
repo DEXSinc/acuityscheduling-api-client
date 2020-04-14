@@ -13,15 +13,15 @@ namespace AcuityScheduling.API.Models
         [Newtonsoft.Json.JsonProperty("appointmentTypeID", Required = Newtonsoft.Json.Required.Always)]
         public int AppointmentTypeId { get; set; }
     
-        /// <summary>Client first name.</summary>
+        /// <summary>AcuityClient first name.</summary>
         [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Always)]
         public string FirstName { get; set; }
     
-        /// <summary>Client last name.</summary>
+        /// <summary>AcuityClient last name.</summary>
         [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Always)]
         public string LastName { get; set; }
     
-        /// <summary>Client e-mail address. Optional for admins.</summary>
+        /// <summary>AcuityClient e-mail address. Optional for admins.</summary>
         [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Always)]
         public string Email { get; set; }
     
@@ -37,7 +37,7 @@ namespace AcuityScheduling.API.Models
         [Newtonsoft.Json.JsonProperty("labels", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Label> Labels { get; set; }
     
-        /// <summary>Client timezone.</summary>
+        /// <summary>AcuityClient timezone.</summary>
         [Newtonsoft.Json.JsonProperty("timezone", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Timezone { get; set; }
     

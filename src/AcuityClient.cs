@@ -8,12 +8,12 @@ using AcuityScheduling.API.Models;
 namespace AcuityScheduling.API
 {
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.6.0 (NJsonSchema v10.0.23.0 (Newtonsoft.Json v10.0.0.0))")]
-    public partial class Client 
+    public partial class AcuityClient : IDisposable
     {
         private readonly System.Net.Http.HttpClient _httpClient;
         private readonly Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public Client(System.Net.Http.HttpClient httpClient)
+        public AcuityClient(HttpClient httpClient)
         {
             _httpClient = httpClient; 
             _settings = new Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -1938,7 +1938,7 @@ namespace AcuityScheduling.API
         /// <param name="search">Filter client list by first name, last name, phone number.</param>
         /// <returns>A single client result</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Client> ListClientsAsync(string search = null)
+        public System.Threading.Tasks.Task<AcuityClient> ListClientsAsync(string search = null)
         {
             return ListClientsAsync(System.Threading.CancellationToken.None, search);
         }
@@ -1948,7 +1948,7 @@ namespace AcuityScheduling.API
         /// <param name="search">Filter client list by first name, last name, phone number.</param>
         /// <returns>A single client result</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Client> ListClientsAsync(System.Threading.CancellationToken cancellationToken, string search = null)
+        public async System.Threading.Tasks.Task<AcuityClient> ListClientsAsync(System.Threading.CancellationToken cancellationToken, string search = null)
         {
             var urlBuilder = new System.Text.StringBuilder();
             urlBuilder.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/clients?");
@@ -1984,7 +1984,7 @@ namespace AcuityScheduling.API
                     var status = ((int)response.StatusCode).ToString();
                     if (status == "200") 
                     {
-                        var objectResponse = await ReadObjectResponseAsync<Client>(response, headers).ConfigureAwait(false);
+                        var objectResponse = await ReadObjectResponseAsync<AcuityClient>(response, headers).ConfigureAwait(false);
                         return objectResponse.Object;
                     }
                     else
@@ -2004,26 +2004,26 @@ namespace AcuityScheduling.API
         }
     
         /// <summary>Update a current client</summary>
-        /// <param name="firstName">Client first name</param>
-        /// <param name="lastName">Client last name</param>
-        /// <param name="phone">Client phone number</param>
+        /// <param name="firstName">AcuityClient first name</param>
+        /// <param name="lastName">AcuityClient last name</param>
+        /// <param name="phone">AcuityClient phone number</param>
         /// <param name="body">The fields to update</param>
         /// <returns>The updated client</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Client> UpdateClientAsync(string firstName, string lastName, Client body, string phone = null)
+        public System.Threading.Tasks.Task<AcuityClient> UpdateClientAsync(string firstName, string lastName, AcuityClient body, string phone = null)
         {
             return UpdateClientAsync(firstName, lastName, body, System.Threading.CancellationToken.None, phone);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Update a current client</summary>
-        /// <param name="firstName">Client first name</param>
-        /// <param name="lastName">Client last name</param>
-        /// <param name="phone">Client phone number</param>
+        /// <param name="firstName">AcuityClient first name</param>
+        /// <param name="lastName">AcuityClient last name</param>
+        /// <param name="phone">AcuityClient phone number</param>
         /// <param name="body">The fields to update</param>
         /// <returns>The updated client</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Client> UpdateClientAsync(string firstName, string lastName, Client body, System.Threading.CancellationToken cancellationToken, string phone = null)
+        public async System.Threading.Tasks.Task<AcuityClient> UpdateClientAsync(string firstName, string lastName, AcuityClient body, System.Threading.CancellationToken cancellationToken, string phone = null)
         {
             if (firstName == null)
                 throw new ArgumentNullException(nameof(firstName));
@@ -2070,7 +2070,7 @@ namespace AcuityScheduling.API
                     var status = ((int)response.StatusCode).ToString();
                     if (status == "200") 
                     {
-                        var objectResponse = await ReadObjectResponseAsync<Client>(response, headers).ConfigureAwait(false);
+                        var objectResponse = await ReadObjectResponseAsync<AcuityClient>(response, headers).ConfigureAwait(false);
                         return objectResponse.Object;
                     }
                     else
@@ -2089,18 +2089,18 @@ namespace AcuityScheduling.API
             }
         }
     
-        /// <returns>The newly created Client</returns>
+        /// <returns>The newly created AcuityClient</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Client> CreateClientAsync(Client body)
+        public System.Threading.Tasks.Task<AcuityClient> CreateClientAsync(AcuityClient body)
         {
             return CreateClientAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="body"></param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The newly created Client</returns>
+        /// <returns>The newly created AcuityClient</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Client> CreateClientAsync(Client body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<AcuityClient> CreateClientAsync(AcuityClient body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder = new System.Text.StringBuilder();
             urlBuilder.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/clients");
@@ -2134,7 +2134,7 @@ namespace AcuityScheduling.API
                     var status = ((int)response.StatusCode).ToString();
                     if (status == "200") 
                     {
-                        var objectResponse = await ReadObjectResponseAsync<Client>(response, headers).ConfigureAwait(false);
+                        var objectResponse = await ReadObjectResponseAsync<AcuityClient>(response, headers).ConfigureAwait(false);
                         return objectResponse.Object;
                     }
                     else
@@ -2154,10 +2154,10 @@ namespace AcuityScheduling.API
         }
     
         /// <summary>Delete an existing client</summary>
-        /// <param name="firstName">Client first name</param>
-        /// <param name="lastName">Client last name</param>
-        /// <param name="phone">Client phone number</param>
-        /// <returns>Client successfully deleted</returns>
+        /// <param name="firstName">AcuityClient first name</param>
+        /// <param name="lastName">AcuityClient last name</param>
+        /// <param name="phone">AcuityClient phone number</param>
+        /// <returns>AcuityClient successfully deleted</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task DeleteClientAsync(string firstName, string lastName, string phone = null)
         {
@@ -2166,10 +2166,10 @@ namespace AcuityScheduling.API
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delete an existing client</summary>
-        /// <param name="firstName">Client first name</param>
-        /// <param name="lastName">Client last name</param>
-        /// <param name="phone">Client phone number</param>
-        /// <returns>Client successfully deleted</returns>
+        /// <param name="firstName">AcuityClient first name</param>
+        /// <param name="lastName">AcuityClient last name</param>
+        /// <param name="phone">AcuityClient phone number</param>
+        /// <returns>AcuityClient successfully deleted</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task DeleteClientAsync(string firstName, string lastName, System.Threading.CancellationToken cancellationToken, string phone = null)
         {
@@ -2219,7 +2219,7 @@ namespace AcuityScheduling.API
                         case "400":
                         {
                             var objectResponse = await ReadObjectResponseAsync<Error>(response, headers).ConfigureAwait(false);
-                            throw new ApiException<Error>("Client does not exist", (int)response.StatusCode, objectResponse.Text, headers, objectResponse.Object, null);
+                            throw new ApiException<Error>("AcuityClient does not exist", (int)response.StatusCode, objectResponse.Text, headers, objectResponse.Object, null);
                         }
 
                         default:
@@ -2596,5 +2596,40 @@ namespace AcuityScheduling.API
 
             return Convert.ToString(value, cultureInfo);
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposedValue) return;
+            if (disposing)
+            {
+                _httpClient?.Dispose();
+                // TODO: dispose managed state (managed objects).
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+
+            disposedValue = true;
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~AcuityClient()
+        // {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

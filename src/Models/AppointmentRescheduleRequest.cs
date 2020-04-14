@@ -13,7 +13,7 @@
         [Newtonsoft.Json.JsonProperty("calendarID", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int CalendarID { get; set; }
     
-        /// <summary>Client timezone.</summary>
+        /// <summary>AcuityClient timezone.</summary>
         [Newtonsoft.Json.JsonProperty("timezone", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Timezone { get; set; }
     
